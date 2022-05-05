@@ -1,0 +1,8 @@
+dill == 0.3.3
+scikit-learn == 0.24.1
+python-multipart == 0.0.5
+fastapi==0.75.2
+requests==2.27.1
+pytest==7.1.2
+pandas==1.4.2
+seaborn==0.11.2
