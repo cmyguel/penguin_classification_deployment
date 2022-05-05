@@ -27,6 +27,8 @@
 name: Deploy to Amazon ECS
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - dev_solution
@@ -34,11 +36,11 @@ on:
 env:
   AWS_REGION: us-east-2                   # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: ml_tp4_speak_penguins           # set this to your Amazon ECR repository name
-  ECS_SERVICE: ml_tp4_speak_penguins_service                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: ml_tp4_speak_penguins                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: ./Deployment/ml_tp4_speak_penguins-revision1.json # set this to the path to your Amazon ECS task definition
+  ECS_SERVICE: penguin_service                 # set this to your Amazon ECS service name
+  ECS_CLUSTER: ml-tp4-talk-penguins                 # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: ./Deployment/task_definition.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: ml_tp4_speak_penguins           # set this to the name of the container in the
+  CONTAINER_NAME: penguin-container           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
 
 permissions:
@@ -89,6 +91,7 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
+        cd Deployment
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
